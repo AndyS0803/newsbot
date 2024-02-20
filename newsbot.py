@@ -191,6 +191,7 @@ def callback_it(call):
                                   message_id=call.message.message_id)
 
     elif a == 'Новости Спорта':
+
         req_sport = call.data.split('_')
         # print(req[0])
 
@@ -248,29 +249,28 @@ def start(m):
 
         driver = webdriver.Chrome(options=option)
 
-        driver.get('https://www.rbc.ru/tags/?tag=IT&ysclid=lsq61w6s7c578817847')
+        driver.get('https://habr.com/ru/news/')
 
         time.sleep(2)
 
-        elems = driver.find_elements(By.CLASS_NAME, "search-item__link-in")
-        for i in range(len(elems)):
-            if i < 10:
-                a = elems[i].text
-                a = a.split('\n')
-                if len(a) > 1:
-                    it_ogl.append(a[0])
-                    it_text.append(a[1])
-                else:
-                    it_ogl.append(a[0])
-                    it_text.append('')
+        elems = driver.find_elements(By.CLASS_NAME, "tm-title__link")
+        for i in elems:
+            if len(it_ogl) < 10:
+                it_ogl.append(i.text)
+
+        elems_text = driver.find_elements(By.CLASS_NAME, "article-formatted-body")
+        for i in elems_text:
+            if len(it_text) < 10:
+                it_text.append(i.text)
 
         elems_link = driver.find_elements(By.XPATH, "//a[@href]")
-
-        for i in range(len(elems_link)):
-            if 'https://www.rbc.ru/technology_and_media/' in elems_link[i].get_attribute("href") and '0' in elems_link[
-                i].get_attribute("href") and len(links_on_state) < 10:
-                # print(elems_link[i].get_attribute("href"))
-                links_on_state.append(elems_link[i].get_attribute("href"))
+        for i in elems_link:
+            st = i.get_attribute("href").split('/')
+            # print(st)
+            if 'https://habr.com/ru/news/' in i.get_attribute("href") and len(st) == 7 and i.get_attribute(
+                    "href") not in links_on_state and len(links_on_state) < 10:
+                #print(i.get_attribute("href"))
+                links_on_state.append(i.get_attribute("href"))
 
         driver.quit()
 
