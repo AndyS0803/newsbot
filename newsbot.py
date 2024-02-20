@@ -149,6 +149,86 @@ def callback_it(call):
                                        f'<i>{link_econom_on_state[page-1]}</i>\n',
                                   parse_mode="HTML", reply_markup=markup, chat_id=call.message.chat.id,
                                   message_id=call.message.message_id)
+    elif a == 'Новости Красоты':
+        req_beauty = call.data.split('_')
+        # print(req[0])
+
+        if req_beauty[0] == 'unseen':
+            bot.delete_message(call.message.chat.id, call.message.message_id)
+        elif 'pagination' in req_beauty[0]:
+            json_string_beauty = json.loads(req_beauty[0])
+            count = json_string_beauty['CountPage']
+            page = json_string_beauty['NumberPage']
+
+            markup = InlineKeyboardMarkup()
+            markup.add(InlineKeyboardButton(text='Скрыть', callback_data='unseen'))
+            if page == 1:
+                markup.add(InlineKeyboardButton(text=f'{page}/{count}', callback_data=f' '),
+                           InlineKeyboardButton(text=f'Вперёд --->',
+                                                callback_data="{\"method\":\"pagination\",\"NumberPage\":" + str(
+                                                    page + 1) + ",\"CountPage\":" + str(count) + "}"))
+            elif page == count:
+                markup.add(InlineKeyboardButton(text=f'<--- Назад',
+                                                callback_data="{\"method\":\"pagination\",\"NumberPage\":" + str(
+                                                    page - 1) + ",\"CountPage\":" + str(count) + "}"),
+                           InlineKeyboardButton(text=f'{page}/{count}', callback_data=f' '))
+            else:
+                markup.add(InlineKeyboardButton(text=f'<--- Назад',
+                                                callback_data="{\"method\":\"pagination\",\"NumberPage\":" + str(
+                                                    page - 1) + ",\"CountPage\":" + str(count) + "}"),
+                           InlineKeyboardButton(text=f'{page}/{count}', callback_data=f' '),
+                           InlineKeyboardButton(text=f'Вперёд -->',
+                                                callback_data="{\"method\":\"pagination\",\"NumberPage\":" + str(
+                                                    page + 1) + ",\"CountPage\":" + str(count) + "}"))
+
+
+            # bot.delete_message(call.message.chat.id, call.message.id)
+            bot.edit_message_text(f'<b>{nazv_beauty}</b>\n\n'
+                                  f'<i>{beaut_ogl[page - 1]}</i>\n'
+                                  f'<i>{beaut_text[page - 1]}</i>\n'
+                                  f'<i>{link_beaut_on_state[page - 1]}</i>\n',
+                                  parse_mode="HTML", reply_markup=markup, chat_id=call.message.chat.id,
+                                  message_id=call.message.message_id)
+
+    elif a == 'Новости Спорта':
+        req_sport = call.data.split('_')
+        # print(req[0])
+
+        if req_sport[0] == 'unseen':
+            bot.delete_message(call.message.chat.id, call.message.message_id)
+        elif 'pagination' in req_sport[0]:
+            json_string_sport = json.loads(req_sport[0])
+            count = json_string_sport['CountPage']
+            page = json_string_sport['NumberPage']
+
+            markup = InlineKeyboardMarkup()
+            markup.add(InlineKeyboardButton(text='Скрыть', callback_data='unseen'))
+            if page == 1:
+                markup.add(InlineKeyboardButton(text=f'{page}/{count}', callback_data=f' '),
+                           InlineKeyboardButton(text=f'Вперёд --->',
+                                                callback_data="{\"method\":\"pagination\",\"NumberPage\":" + str(
+                                                    page + 1) + ",\"CountPage\":" + str(count) + "}"))
+            elif page == count:
+                markup.add(InlineKeyboardButton(text=f'<--- Назад',
+                                                callback_data="{\"method\":\"pagination\",\"NumberPage\":" + str(
+                                                    page - 1) + ",\"CountPage\":" + str(count) + "}"),
+                           InlineKeyboardButton(text=f'{page}/{count}', callback_data=f' '))
+            else:
+                markup.add(InlineKeyboardButton(text=f'<--- Назад',
+                                                callback_data="{\"method\":\"pagination\",\"NumberPage\":" + str(
+                                                    page - 1) + ",\"CountPage\":" + str(count) + "}"),
+                           InlineKeyboardButton(text=f'{page}/{count}', callback_data=f' '),
+                           InlineKeyboardButton(text=f'Вперёд -->',
+                                                callback_data="{\"method\":\"pagination\",\"NumberPage\":" + str(
+                                                    page + 1) + ",\"CountPage\":" + str(count) + "}"))
+
+            # bot.delete_message(call.message.chat.id, call.message.id)
+            bot.edit_message_text(f'<b>{nazv_sport}</b>\n\n'
+                                  f'<i>{sport_ogl[page - 1]}</i>\n'
+                                  f'<i>{sport_text[page - 1]}</i>\n'
+                                  f'<i>{link_sport_on_state[page - 1]}</i>\n',
+                                  parse_mode="HTML", reply_markup=markup, chat_id=call.message.chat.id,
+                                  message_id=call.message.message_id)
 
 @bot.message_handler(func=lambda m: True, content_types=['text'])
 def start(m):
@@ -320,7 +400,112 @@ def start(m):
                                          f'<i>{econom_text[page - 1]}</i>\n'
                                          f'<i>{link_econom_on_state[page - 1]}</i>\n',
                          parse_mode="HTML", reply_markup=markup)
+    elif m.text == '/beauty':
 
+        global beaut_ogl, beaut_text, link_beaut_on_state, nazv_beauty
+        beaut_ogl = []
+        beaut_text = []
+        link_beaut_on_state = []
+
+        option = webdriver.ChromeOptions()
+
+        driver = webdriver.Chrome(options=option)
+
+        driver.get('https://www.woman.ru/beauty/?ysclid=lsuhq6ym4c399787471')
+
+        time.sleep(2)
+
+        elems = driver.find_elements(By.CLASS_NAME, "announce-inline__title-link")
+        for i in range(len(elems)):
+            if len(beaut_ogl) < 10:
+                beaut_ogl.append(elems[i].text)
+                # print(elems[i].text)
+
+        elems = driver.find_elements(By.CLASS_NAME, "announce-inline__description")
+        for i in range(len(elems)):
+            if len(beaut_text) < 10:
+                beaut_text.append(elems[i].text)
+                # print(elems[i].text)
+
+        elems_link = driver.find_elements(By.XPATH, "//a[@href]")
+        for i in range(len(elems_link)):
+            st = elems_link[i].get_attribute("href")
+            st = st.split('/')
+            if len(st) > 5 and (('https://www.woman.ru/news/' in elems_link[i].get_attribute("href") or 'https://www.woman.ru/beauty/' in elems_link[i].get_attribute("href") or
+               'https://www.woman.ru/stars/' in elems_link[i].get_attribute("href") or 'https://www.woman.ru/health/' in elems_link[i].get_attribute("href")) and
+                len(link_beaut_on_state) < 10 and elems_link[i].get_attribute("href") not in link_beaut_on_state):
+                # print(elems_link[i].get_attribute("href"))
+                link_beaut_on_state.append(elems_link[i].get_attribute("href"))
+
+        driver.quit()
+
+        nazv_beauty = 'Новости Красоты'
+
+        page = 1
+        count = len(beaut_ogl)
+
+        markup = InlineKeyboardMarkup()
+        markup.add(InlineKeyboardButton(text='Скрыть', callback_data='unseen'))
+        markup.add(InlineKeyboardButton(text=f'{page}/{count}', callback_data=f' '),
+                   InlineKeyboardButton(text=f'Вперёд --->',
+                                        callback_data="{\"method\":\"pagination\",\"NumberPage\":" + str(
+                                            page + 1) + ",\"CountPage\":" + str(count) + "}"))
+
+        bot.send_message(m.from_user.id, f'<b>{nazv_beauty}</b>\n\n'
+                                         f'<i>{beaut_ogl[page - 1]}</i>\n'
+                                         f'<i>{beaut_text[page - 1]}</i>\n'
+                                         f'<i>{link_beaut_on_state[page - 1]}</i>\n',
+                         parse_mode="HTML", reply_markup=markup)
+
+    elif m.text == '/sport':
+
+        global sport_ogl, sport_text, link_sport_on_state, nazv_sport
+        sport_ogl = []
+        sport_text = []
+        link_sport_on_state = []
+
+        option = webdriver.ChromeOptions()
+
+        driver = webdriver.Chrome(options=option)
+
+        driver.get('https://www.rbc.ru/sport/?ysclid=lsujpg1ueg863708069')
+
+        time.sleep(2)
+
+        elems = driver.find_elements(By.CLASS_NAME, "item__title-wrap")
+        for i in elems:
+            if len(sport_ogl) < 10:
+                sport_ogl.append(i.text)
+                sport_text.append('')
+                # print(i.text)
+
+        elems_link = driver.find_elements(By.XPATH, "//a[@href]")
+        for i in range(len(elems_link)):
+            if ('https://www.rbc.ru/sport/' in elems_link[i].get_attribute("href") and '?' not in elems_link[
+                i].get_attribute("href") and
+                    len(link_sport_on_state) < 10):
+                # print(elems_link[i].get_attribute("href"))
+                link_sport_on_state.append(elems_link[i].get_attribute("href"))
+
+        driver.quit()
+
+        nazv_sport = 'Новости Спорта'
+
+        page = 1
+        count = len(sport_ogl)
+
+        markup = InlineKeyboardMarkup()
+        markup.add(InlineKeyboardButton(text='Скрыть', callback_data='unseen'))
+        markup.add(InlineKeyboardButton(text=f'{page}/{count}', callback_data=f' '),
+                   InlineKeyboardButton(text=f'Вперёд --->',
+                                        callback_data="{\"method\":\"pagination\",\"NumberPage\":" + str(
+                                            page + 1) + ",\"CountPage\":" + str(count) + "}"))
+
+        bot.send_message(m.from_user.id, f'<b>{nazv_sport}</b>\n\n'
+                                         f'<i>{sport_ogl[page - 1]}</i>\n'
+                                         f'<i>{sport_text[page - 1]}</i>\n'
+                                         f'<i>{link_sport_on_state[page - 1]}</i>\n',
+                         parse_mode="HTML", reply_markup=markup)
 
 
 if __name__ == '__main__':
