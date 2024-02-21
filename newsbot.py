@@ -266,9 +266,8 @@ def start(m):
         elems_link = driver.find_elements(By.XPATH, "//a[@href]")
         for i in elems_link:
             st = i.get_attribute("href").split('/')
-            # print(st)
-            if 'https://habr.com/ru/news/' in i.get_attribute("href") and len(st) == 7 and i.get_attribute(
-                    "href") not in links_on_state and len(links_on_state) < 10:
+            if (('https://habr.com/ru/' in i.get_attribute("href") and 'news' in i.get_attribute("href") and len(st) >= 7 and
+                'comments' not in i.get_attribute("href")and i.get_attribute("href") not in links_on_state) and len(links_on_state) < 10):
                 #print(i.get_attribute("href"))
                 links_on_state.append(i.get_attribute("href"))
 
