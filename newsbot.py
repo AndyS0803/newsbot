@@ -513,6 +513,11 @@ def task1():
                                              f'<i>{link_sport_on_state[page - 1]}</i>\n',
                              parse_mode="HTML", reply_markup=markup)
 
+        elif m.text == '/projects':
+            bot.send_message(m.from_user.id, f'<b>Наши проекты</b>\n\n'
+                                            f'<i>Загрузка медиа из соц.сетей @Download_Media_and_Audio_Bot</i>',
+                             parse_mode="HTML")
+
     bot.polling(none_stop=True)
 
 
