@@ -2,7 +2,7 @@ import json
 import threading
 
 import telebot
-
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 import time
@@ -246,7 +246,11 @@ def task1():
             it_ogl = []
             it_text = []
             links_on_state = []
+            
+            service = Service(executable_path='/root/parse_tg_bot/chromedriver-linux64/chromedriver')
             option = webdriver.ChromeOptions()
+            option.add_argument('--headless')
+            option.add_argument('--no-sandbox')
 
             # Задайте путь к директории, в которую вы хотите сохранить файлы
             # download_directory = 'E:\\PycharmProjects\\nlp_lab6_app'
@@ -254,7 +258,7 @@ def task1():
             # Указываем директорию для загрузки файлов
             # option.add_experimental_option('prefs', {'download.default_directory': download_directory})
 
-            driver = webdriver.Chrome(options=option)
+            driver = webdriver.Chrome(service=service, options=option)
 
             driver.get('https://habr.com/ru/news/')
 
@@ -308,10 +312,13 @@ def task1():
             links_politics_on_state = []
 
 
+            service = Service(executable_path='/root/parse_tg_bot/chromedriver-linux64/chromedriver')
             option = webdriver.ChromeOptions()
+            option.add_argument('--headless')
+            option.add_argument('--no-sandbox')
 
 
-            driver = webdriver.Chrome(options=option)
+            driver = webdriver.Chrome(service=service, options=option)
 
             driver.get('https://ria.ru/politics/?ysclid=lsrftj5mnc715817108')
 
@@ -360,9 +367,12 @@ def task1():
             econom_text = []
             link_econom_on_state = []
 
+            service = Service(executable_path='/root/parse_tg_bot/chromedriver-linux64/chromedriver')
             option = webdriver.ChromeOptions()
+            option.add_argument('--headless')
+            option.add_argument('--no-sandbox')
 
-            driver = webdriver.Chrome(options=option)
+            driver = webdriver.Chrome(service=service, options=option)
 
             driver.get('https://www.rbc.ru/economics/?ysclid=lssvra1ptl265936439')
 
@@ -413,9 +423,12 @@ def task1():
             beaut_text = []
             link_beaut_on_state = []
 
+            service = Service(executable_path='/root/parse_tg_bot/chromedriver-linux64/chromedriver')
             option = webdriver.ChromeOptions()
+            option.add_argument('--headless')
+            option.add_argument('--no-sandbox')
 
-            driver = webdriver.Chrome(options=option)
+            driver = webdriver.Chrome(service=service, options=option)
 
             driver.get('https://www.woman.ru/beauty/?ysclid=lsuhq6ym4c399787471')
 
@@ -470,9 +483,12 @@ def task1():
             sport_text = []
             link_sport_on_state = []
 
+            service = Service(executable_path='/root/parse_tg_bot/chromedriver-linux64/chromedriver')
             option = webdriver.ChromeOptions()
+            option.add_argument('--headless')
+            option.add_argument('--no-sandbox')
 
-            driver = webdriver.Chrome(options=option)
+            driver = webdriver.Chrome(service=service, options=option)
 
             driver.get('https://www.rbc.ru/sport/?ysclid=lsujpg1ueg863708069')
 
@@ -529,10 +545,13 @@ def task2():
         it_ogl = []
         it_text = []
         links_on_state = []
+        service = Service(executable_path='/root/parse_tg_bot/chromedriver-linux64/chromedriver')
         option = webdriver.ChromeOptions()
+        option.add_argument('--headless')
+        option.add_argument('--no-sandbox')
 
 
-        driver = webdriver.Chrome(options=option)
+        driver = webdriver.Chrome(service=service, options=option)
 
         driver.get('https://habr.com/ru/news/')
 
@@ -575,10 +594,13 @@ def task3():
         links_politics_on_state = []
 
 
+        service = Service(executable_path='/root/parse_tg_bot/chromedriver-linux64/chromedriver')
         option = webdriver.ChromeOptions()
+        option.add_argument('--headless')
+        option.add_argument('--no-sandbox')
 
 
-        driver = webdriver.Chrome(options=option)
+        driver = webdriver.Chrome(service=service, options=option)
 
         driver.get('https://ria.ru/politics/?ysclid=lsrftj5mnc715817108')
 
@@ -617,9 +639,12 @@ def task4():
         econom_text = []
         link_econom_on_state = []
 
+        service = Service(executable_path='/root/parse_tg_bot/chromedriver-linux64/chromedriver')
         option = webdriver.ChromeOptions()
+        option.add_argument('--headless')
+        option.add_argument('--no-sandbox')
 
-        driver = webdriver.Chrome(options=option)
+        driver = webdriver.Chrome(service=service, options=option)
 
         driver.get('https://www.rbc.ru/economics/?ysclid=lssvra1ptl265936439')
 
@@ -657,9 +682,12 @@ def task5():
         beaut_text = []
         link_beaut_on_state = []
 
+        service = Service(executable_path='/root/parse_tg_bot/chromedriver-linux64/chromedriver')
         option = webdriver.ChromeOptions()
+        option.add_argument('--headless')
+        option.add_argument('--no-sandbox')
 
-        driver = webdriver.Chrome(options=option)
+        driver = webdriver.Chrome(service=service, options=option)
 
         driver.get('https://www.woman.ru/beauty/?ysclid=lsuhq6ym4c399787471')
 
@@ -701,9 +729,12 @@ def task6():
         sport_text = []
         link_sport_on_state = []
 
+        service = Service(executable_path='/root/parse_tg_bot/chromedriver-linux64/chromedriver')
         option = webdriver.ChromeOptions()
+        option.add_argument('--headless')
+        option.add_argument('--no-sandbox')
 
-        driver = webdriver.Chrome(options=option)
+        driver = webdriver.Chrome(service=service, options=option)
 
         driver.get('https://www.rbc.ru/sport/?ysclid=lsujpg1ueg863708069')
 
