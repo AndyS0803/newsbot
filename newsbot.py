@@ -10,7 +10,7 @@ import time
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 def task1():
-    bot = telebot.TeleBot('6501463944:AAFCb_wH29iHAraErA6puoM5RbnRNtiPK2I')
+    bot = telebot.TeleBot('7183034616:AAFT7Ul3Ev68jMysx7gYOTudXVpkDZcFRkE')
 
     def send_html_formatted_message(chat_id, formated_text):
         bot.send_message(chat_id, formated_text, parse_mode='HTML')
